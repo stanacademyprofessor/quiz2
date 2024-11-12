@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz Game</title>
+</head>
+<body>
+    <h1>Haematopoiesis Quiz</h1>
+    <div id="quiz-container">
+        <div id="question-container"></div>
+        <div id="feedback" style="color: green; font-weight: bold;"></div>
+        <button id="next-button" onclick="loadNextQuestion()" style="display:none;">Next Question</button>
+    </div>
+    <div id="results"></div>
+
+    <script>
+        const quizQuestions = [
+            {question: "What does haematopoiesis refer to?", options: ["The study of blood disorders", "The process of blood clotting", "The production and differentiation of blood cells", "The destruction of blood cells"], correctAnswer: 2},
+            {question: "Where does blood cell production, maturation, and death occur?", options: ["Circulatory system", "Reticuloendo-thelial system (RES)", "Lymphatic system", "Digestive system"], correctAnswer: 1},
+            {question: "Which of the following is NOT a component of the RES?", options: ["Bone marrow", "Spleen", "Pancreas", "Lymph nodes"], correctAnswer: 2},
+            {question: "What is the first cell produced in the mesoblastic phase of intrauterine haematopoiesis?", options: ["Lymphocyte", "Megakaryocyte", "Primitive nucleated erythroblast", "Myeloblast"], correctAnswer: 2},
+            {question: "When does the myeloid/medullary phase of haematopoiesis begin?", options: ["At birth", "At 6 weeks gestation", "Around the fifth month of gestation", "At 19 days gestation"], correctAnswer: 2},
+            {question: "What is the approximate percentage of active red marrow in a newborn?", options: ["20%", "40%", "60%", "80-90%"], correctAnswer: 3},
+            {question: "In an adult, where is haematopoiesis primarily confined to?", options: ["All bones throughout the body", "Proximal ends of large flat bones, pelvis, and sternum", "Liver and spleen", "Small bones in the hands and feet"], correctAnswer: 1},
+            {question: "What does a normocellular bone marrow indicate?", options: ["Less than 30% haematopoietic cells", "More than 70% haematopoietic cells", "Few or no haematopoietic cells", "30-70% haematopoietic cells"], correctAnswer: 3},
+            {question: "What is the normal myeloid:erythroid (M:E) ratio?", options: ["1:1", "2:1", "3:1 to 4:1", "1:4"], correctAnswer: 2},
+            {question: "What type of cells do lymphoid progenitor cells differentiate into?", options: ["Erythrocytes and platelets", "Neutrophils and monocytes", "B and T lymphocytes", "Eosinophils and basophils"], correctAnswer: 2},
+            {question: "What does CFU-GEMM stand for?", options: ["Colony-forming-unit-granulocyte-erythrocyte-macrophage-megakaryocyte", "Cell-forming-unit-general-erythroid-marrow-megakaryocyte", "Colony-forming-unit-group-erythroid-monocyte-myeloblast", "Cell-forming-unit-granulocyte-eosinophil-mast cell-monocyte"], correctAnswer: 0},
+            {question: "Where does antigen-independent lymphopoiesis occur?", options: ["Lymph nodes", "Spleen", "Bone marrow and thymus", "Peyer's patches"], correctAnswer: 2},
+            {question: "Which leukocytes are classified as phagocytes?", options: ["Lymphocytes and plasma cells", "Granulocytes and monocytes", "Eosinophils and basophils", "T lymphocytes and B lymphocytes"], correctAnswer: 1},
+            {question: "Which lymphocytes are responsible for humoral immunity?", options: ["T lymphocytes", "B lymphocytes", "NK lymphocytes", "All lymphocytes"], correctAnswer: 1},
+            {question: "What is the role of eosinophils?", options: ["Mediate immediate hypersensitivity reactions", "Modulate the allergic response", "Phagocytize foreign bodies", "Provide cellular immunity"], correctAnswer: 1},
+            {question: "When does extramedullary haematopoiesis occur?", options: ["During fetal development", "When the bone marrow cannot meet body requirements", "As a normal part of aging", "After strenuous exercise"], correctAnswer: 1}
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            const questionContainer = document.getElementById("question-container");
+            const question = quizQuestions[currentQuestionIndex];
+            questionContainer.innerHTML = `
+                <h3>${currentQuestionIndex + 1}. ${question.question}</h3>
+                ${question.options.map((option, i) => `
+                    <label>
+                        <input type="radio" name="answer" value="${i}" onclick="checkAnswer(${i})">
+                        ${option}
+                    </label><br>
+                `).join('')}
+            `;
+            document.getElementById("feedback").innerText = "";
+            document.getElementById("next-button").style.display = "none";
+        }
+
+        function checkAnswer(selectedOption) {
+            const question = quizQuestions[currentQuestionIndex];
+            const feedback = document.getElementById("feedback");
+
+            if (selectedOption === question.correctAnswer) {
+                feedback.innerText = "Correct!";
+                document.getElementById("next-button").style.display = "block";
+            } else {
+                feedback.innerText = "Incorrect. Try again.";
+            }
+        }
+
+        function loadNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("quiz-container").innerHTML = "<h2>Quiz Complete!</h2>";
+            }
+        }
+
+        // Load the first question when the page loads
+        loadQuestion();
+    </script>
+</body>
+</html>
+
+
